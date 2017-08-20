@@ -1,0 +1,27 @@
+[ENABLE]
+
+aobscan(INJECT,FF 8E E8 02 00 00 83)
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+
+code:
+  mov [esi+000002E8], 0
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db FF 8E E8 02 00 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
